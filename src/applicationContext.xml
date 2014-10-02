@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	                    http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+	                    http://www.springframework.org/schema/tx 
+	                    http://www.springframework.org/schema/tx/spring-tx-3.1.xsd
+	                    http://www.springframework.org/schema/aop
+	                    http://www.springframework.org/schema/aop/spring-aop-3.1.xsd
+	                    ">
+	
+	<bean id="dataSource"
+		class="org.apache.commons.dbcp.BasicDataSource">
+		<property name="driverClassName"
+			value="oracle.jdbc.OracleDriver">
+		</property>
+		<property name="url"
+			value="jdbc:oracle:thin:@localhost:1521:orcl">
+		</property>
+		<property name="username" value="myoa"></property>
+		<property name="password" value="myoa"></property>
+	</bean>
+	
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
+		<property name="dataSource">
+			<ref bean="dataSource" />
+		</property>
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">
+					org.hibernate.dialect.Oracle9Dialect
+				</prop>
+				<prop key="hibernate.show_sql">true</prop>
+			</props>
+		</property>
+		<!-- 加载由注解定义的持久化类 -->
+		<property name="packagesToScan" value="com.oa.admin.pojo"/>
+	</bean>	
+	
+	<bean id="txManager"   class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+  		<property name="sessionFactory" ref="sessionFactory" />
+   </bean>
+
+	<tx:advice id="txAdvice" transaction-manager="txManager">
+			  <tx:attributes>
+					   <tx:method name="get*" read-only="true"  />
+					   <tx:method name="find*" read-only="true"  />
+					   <tx:method name="query*" read-only="true"  />
+					   <tx:method name="save*" propagation="REQUIRED"/> 
+					   <tx:method name="add*" propagation="REQUIRED"/> 
+					   <tx:method name="update*" propagation="REQUIRED"/> 
+					   <tx:method name="delete*" propagation="REQUIRED"/>
+			  </tx:attributes>
+ 	</tx:advice>
+ 
+	 <aop:config>
+	  	<aop:pointcut id="ServiceMethod"	   expression="execution(* com.oa.*.biz.*.*(..))" />
+	 	 <aop:advisor  pointcut-ref="ServiceMethod" 	  advice-ref="txAdvice" />
+	 </aop:config>
+	 
+	<import resource="com/oa/admin/conf/applicationContext-user.xml"/>
+	
+</beans>

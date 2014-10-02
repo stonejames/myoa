@@ -1,0 +1,198 @@
+package com.oa.admin.dao;
+
+import java.util.List;
+import java.util.Set;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.hibernate.LockMode;
+import org.hibernate.Session;
+import org.springframework.context.ApplicationContext;
+import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
+
+import com.oa.admin.pojo.TUser;
+
+/**
+ * A data access object (DAO) providing persistence and search support for TUser
+ * entities. Transaction control of the save(), update() and delete() operations
+ * can directly support Spring container-managed transactions or they can be
+ * augmented to handle user-managed Spring transactions. Each of these methods
+ * provides additional information for how to configure it for the desired type
+ * of transaction control.
+ * 
+ * @see com.oa.admin.pojo.TUser
+ * @author MyEclipse Persistence Tools
+ */
+
+public class TUserDAO extends HibernateDaoSupport {
+	private static final Log log = LogFactory.getLog(TUserDAO.class);
+	// property constants
+	public static final String USERNAME = "username";
+	public static final String PASSWORD = "password";
+
+	protected void initDao() {
+		// do nothing
+	}
+
+	public void save(TUser transientInstance) {
+		log.debug("saving TUser instance");
+		try {
+			getHibernateTemplate().save(transientInstance);
+			log.debug("save successful");
+		} catch (RuntimeException re) {
+			log.error("save failed", re);
+			throw re;
+		}
+	}
+
+	public void delete(TUser persistentInstance) {
+		log.debug("deleting TUser instance");
+		try {
+			getHibernateTemplate().delete(persistentInstance);
+			log.debug("delete successful");
+		} catch (RuntimeException re) {
+			log.error("delete failed", re);
+			throw re;
+		}
+	}
+
+	public TUser findById(java.lang.Integer id) {
+		log.debug("getting TUser instance with id: " + id);
+		try {
+			TUser instance = (TUser) getHibernateTemplate().get(
+					"com.oa.admin.pojo.TUser", id);
+			return instance;
+		} catch (RuntimeException re) {
+			log.error("get failed", re);
+			throw re;
+		}
+	}
+
+	public List findByExample(TUser instance) {
+		log.debug("finding TUser instance by example");
+		try {
+			List results = getHibernateTemplate().findByExample(instance);
+			log.debug("find by example successful, result size: "
+					+ results.size());
+			return results;
+		} catch (RuntimeException re) {
+			log.error("find by example failed", re);
+			throw re;
+		}
+	}
+
+	public List findByProperty(String propertyName, Object value) {
+		log.debug("finding TUser instance with property: " + propertyName
+				+ ", value: " + value);
+		try {
+			String queryString = "from TUser as model where model."
+					+ propertyName + "= ?";
+			return getHibernateTemplate().find(queryString, value);
+		} catch (RuntimeException re) {
+			log.error("find by property name failed", re);
+			throw re;
+		}
+	}
+
+	//关联查询出当前用户的角色
+	public List findByProperty2(String propertyName, Object value) {
+		log.debug("finding TUser instance with property: " + propertyName
+				+ ", value: " + value);
+		try {
+			String queryString = "select distinct u from TUser u left join fetch u.roles " +
+					" where u."
+					+ propertyName + "= ?";
+			return getHibernateTemplate().find(queryString, value);
+		} catch (RuntimeException re) {
+			log.error("find by property name failed", re);
+			throw re;
+		}
+	}
+	
+	
+	public List findByUsername(Object username) {
+		return findByProperty(USERNAME, username);
+	}
+
+	public List findByPassword(Object password) {
+		return findByProperty(PASSWORD, password);
+	}
+
+	public List findAll() {
+		log.debug("finding all TUser instances");
+		try {
+			String queryString = "from TUser";
+			return getHibernateTemplate().find(queryString);
+		} catch (RuntimeException re) {
+			log.error("find all failed", re);
+			throw re;
+		}
+	}
+
+	public TUser merge(TUser detachedInstance) {
+		log.debug("merging TUser instance");
+		try {
+			TUser result = (TUser) getHibernateTemplate().merge(
+					detachedInstance);
+			log.debug("merge successful");
+			return result;
+		} catch (RuntimeException re) {
+			log.error("merge failed", re);
+			throw re;
+		}
+	}
+
+	public void attachDirty(TUser instance) {
+		log.debug("attaching dirty TUser instance");
+		try {
+			getHibernateTemplate().saveOrUpdate(instance);
+			log.debug("attach successful");
+		} catch (RuntimeException re) {
+			log.error("attach failed", re);
+			throw re;
+		}
+	}
+
+	public void attachClean(TUser instance) {
+		log.debug("attaching clean TUser instance");
+		try {
+			getHibernateTemplate().lock(instance, LockMode.NONE);
+			log.debug("attach successful");
+		} catch (RuntimeException re) {
+			log.error("attach failed", re);
+			throw re;
+		}
+	}
+
+	//总数
+	public Integer  count() {
+		log.debug("finding all TUser instances");
+		try {
+			String queryString = "select count(*) from TUser";
+			return ((Long)getHibernateTemplate().getSessionFactory().getCurrentSession().createQuery(queryString).uniqueResult()).intValue();
+		} catch (RuntimeException re) {
+			log.error("find all failed", re);
+			throw re;
+		}
+	}
+	/**
+	 * 分页方法
+	 * @return
+	 */
+	public List findAllByPage(TUser user,String pageNumber,String pageSize) {
+		log.debug("finding all TUser instances");
+		try {
+			String queryString = "from TUser order by id";
+			Integer page = null!=pageNumber?Integer.parseInt(pageNumber):0;
+			Integer size = null!=pageSize?Integer.parseInt(pageSize):10;
+			Session session = getHibernateTemplate().getSessionFactory().getCurrentSession();
+			return session.createQuery(queryString).setFirstResult((page-1)*size).setMaxResults(size).list();
+		} catch (RuntimeException re) {
+			log.error("find all failed", re);
+			throw re;
+		}
+	}
+	
+	public static TUserDAO getFromApplicationContext(ApplicationContext ctx) {
+		return (TUserDAO) ctx.getBean("TUserDAO");
+	}
+}
