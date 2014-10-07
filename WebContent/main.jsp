@@ -60,8 +60,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				<div id="aa" class="easyui-accordion" fit="true" >  
 					 <s:iterator value="permissions">
 					 	<s:if test='id == parentid'>
+					 	    <s:set var="parent"  value="id"></s:set>
 					 		<div title="${name}"  style="overflow:auto;padding:10px;">  
-					 			
+					 				 <s:iterator value="permissions">
+					 				 	 <s:if test="id != parentid && buttionid == null &&  #request.parent  == parentid">
+					 				 	 	<a title="jsp/${url }">${name }</a><br>
+					 				 	 </s:if>
+					 				 </s:iterator>
 				    			<%--<a title="jsp/${url }">${name }</a><br>--%>
 				    		</div>  
 					 	</s:if>

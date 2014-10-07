@@ -13,7 +13,7 @@
 	                    http://www.springframework.org/schema/aop/spring-aop-3.1.xsd
 	                    ">
 	
-	<bean id="userDAO" class="com.oa.admin.dao.TUserDAO">
+	<bean id="userDao" class="com.oa.admin.dao.TUserDAO">
 		<property name="sessionFactory">
 			<ref bean="sessionFactory" />
 		</property>
@@ -33,7 +33,7 @@
     
 	<bean id="userBiz" class="com.oa.admin.biz.impl.UserBiz">
 		  <property name="userDao">
-		  	<ref  bean="userDAO"/>
+		  	<ref  bean="userDao"/>
 		  </property>
 		  <property name="roleDao">
 		  	<ref  bean="roleDao"/>
@@ -43,10 +43,21 @@
 		  </property>
 	</bean>
 
+	<bean id="roleBiz" class="com.oa.admin.biz.impl.RoleBiz">
+	     <property name="roleDao">
+		  	<ref  bean="roleDao"/>
+		  </property>
+	</bean>
+	
 	<bean id="userAction"  class="com.oa.admin.action.UserAction" scope="prototype">
 		  <property name="userBiz">
 		  	<ref  bean="userBiz"/>
 		  </property>
 	</bean>
 	
+	<bean id="roleAction" class="com.oa.admin.action.RoleAction" scope="prototype">
+	      <property name="roleBiz">
+		  	<ref  bean="roleBiz"/>
+		  </property>
+	</bean>
 </beans>

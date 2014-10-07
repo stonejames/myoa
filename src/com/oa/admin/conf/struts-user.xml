@@ -21,6 +21,13 @@
    						<param name="excludeNullProperties">true</param>  
    					</result>
    			</action>
-   </package>
+   			<!-- 查询角色 -->
+   			<action name="queryRole" class="roleAction"  method="queryRole">
+   					<result type="json">
+   						<param name="root">result</param>
+   						<param name="excludeNullProperties">true</param>  
+   					</result>
+   			</action>
+        </package>
    
 </struts>

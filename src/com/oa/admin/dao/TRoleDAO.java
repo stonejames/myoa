@@ -156,6 +156,35 @@ public class TRoleDAO extends HibernateDaoSupport {
 		}
 	}
 
+	//总数
+		public Integer  count() {
+			log.debug("finding all TRole instances");
+			try {
+				String queryString = "select count(*) from TRole";
+				return ((Long)getHibernateTemplate().getSessionFactory().getCurrentSession().createQuery(queryString).uniqueResult()).intValue();
+			} catch (RuntimeException re) {
+				log.error("find all failed", re);
+				throw re;
+			}
+		}
+		/**
+		 * 分页方法
+		 * @return
+		 */
+		public List findAllByPage(TRole role,String pageNumber,String pageSize) {
+			log.debug("finding all TRole instances");
+			try {
+				String queryString = "from TRole order by id";
+				Integer page = null!=pageNumber?Integer.parseInt(pageNumber):0;
+				Integer size = null!=pageSize?Integer.parseInt(pageSize):10;
+				Session session = getHibernateTemplate().getSessionFactory().getCurrentSession();
+				return session.createQuery(queryString).setFirstResult((page-1)*size).setMaxResults(size).list();
+			} catch (RuntimeException re) {
+				log.error("find all failed", re);
+				throw re;
+			}
+		}
+		
 	public static TRoleDAO getFromApplicationContext(ApplicationContext ctx) {
 		return (TRoleDAO) ctx.getBean("TRoleDAO");
 	}

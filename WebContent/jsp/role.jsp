@@ -6,7 +6,7 @@ String path = request.getContextPath();
 <html>
   <head>
     
-    <title>用户管理</title>
+    <title>角色管理</title>
     
 	<meta http-equiv="pragma" content="no-cache">
 	<meta http-equiv="cache-control" content="no-cache">
@@ -26,9 +26,9 @@ String path = request.getContextPath();
 	<script type="text/javascript" src="<%=path%>/js/common.js"></script>
 	<script type="text/javascript">
 		$(function(){
-			$('#userdg').datagrid({
+			$('#roledg').datagrid({
 				fit: true, //宽度和高度自适应屏幕
-				url:'queryUser.action',
+				url:'queryRole.action',
 				pagination:true,//显示底部分页栏
 				pageSize:5,//默认每页记录数
 				pageList:[5,10,15],
@@ -36,27 +36,25 @@ String path = request.getContextPath();
 				//singleSelect:true,//只允许选择一行
 				columns:[[
 					{field:'ck',checkbox:true },
-					{field:'id',title:'员工编号',width:70},
-					{field:'username',title:'员工姓名',width:100},
-					{field:'password',title:'登录密码',width:100},
-					{field:'rolename',title:'角色',width:100},
+					{field:'id',title:'角色编号',width:70},
+					{field:'rolename',title:'角色名称',width:100},
 				]],
 				toolbar:[{
 						iconCls: 'icon-save', // 'icon-search'  'icon-edit'  'icon-help',
 						text:'保存',
-						id:'userbtnadd',
+						id:'rolebtnadd',
 						handler: function(){
 						}
 				},{
 					iconCls: 'icon-remove', // 'icon-search'  'icon-edit'  'icon-help',
 					text:'删除',
-					id:'userbtndel',
+					id:'rolebtndel',
 					handler: function(){
 					}
 				},{
 					iconCls: 'icon-edit', // 'icon-search'  'icon-edit'  'icon-help',
 					text:'修改',
-					id:'userbtnedit',
+					id:'rolebtnedit',
 					handler: function(){ 
 					}
 				}]
@@ -64,7 +62,7 @@ String path = request.getContextPath();
 			$("#quxiao").click(function(){
 				$('#win').window('close');  
 			})
-			$('#userdg').datagrid("permissionToolbarItem",'${CurrentSession.buttonid}');
+			$('#roledg').datagrid("permissionToolbarItem",'${CurrentSession.buttonid}');
 			
 		});
 		</script>
@@ -72,16 +70,16 @@ String path = request.getContextPath();
   
   <body style="padding: 0px;">
        <div id="lay" class="easyui-layout" style="width: 100%;height:100%;" >
-       		<div region="north" title="用户查询" collapsed="true" style="height:80px;" >
+       		<div region="north" title="角色查询" collapsed="true" style="height:80px;" >
 				<form id="mysearch" method="post">
-						用户名:&nbsp;&nbsp;&nbsp;<input name="username" class="easyui-validatebox"  value="" />
+						角色名:&nbsp;&nbsp;&nbsp;<input name="rolename" class="easyui-validatebox"  value="" />
 						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 						<a id="searchbtn" class="easyui-linkbutton">查询</a> <a id="clearbtn" class="easyui-linkbutton">清空</a>
 				</form>
 			
 			</div>
 			<div region="center">
-	  			<table id="userdg"></table>
+	  			<table id="roledg"></table>
 	  		</div>
 	  </div>
   </body>
