@@ -7,13 +7,13 @@ import com.oa.admin.pojo.TRole;
 public interface IRoleBiz {
 
 	/**
-	 * 分页查询
+	 * 鍒嗛〉鏌ヨ
 	 * @return
 	 */
 	public List<TRole> queryRoles(TRole role,String pageNumber,String pageSize);
 	
 	/**
-	 * 分页查询总数
+	 * 鍒嗛〉鏌ヨ鎬绘暟
 	 * @return
 	 */
 	public Integer queryRoleCount(TRole role);

@@ -15,7 +15,7 @@ import com.opensymphony.xwork2.ActionSupport;
 
 /**
  * 
- * @author ÍõÅô³É
+ * @author ç‹é¹æˆ
  *
  */
 public class UserAction extends ActionSupport{
@@ -28,11 +28,11 @@ public class UserAction extends ActionSupport{
 	
 	private IUserBiz userBiz;
 	
-	private String rows;//Ã¿Ò³ÏÔÊ¾¼ÇÂ¼ÌõÊı
+	private String rows;//æ¯é¡µæ˜¾ç¤ºè®°å½•æ¡æ•°
 	
-	private String page;//µ±Ç°Ò³Êı
+	private String page;//å½“å‰é¡µæ•°
 	
-	private JSONObject result;  //´æ´¢·µ»Øjson
+	private JSONObject result;  //å­˜å‚¨è¿”å›json
 	 
 	
 	
@@ -45,11 +45,11 @@ public class UserAction extends ActionSupport{
 		return SUCCESS;
 	}
 	/**
-	 * ²éÑ¯ÓÃ»§
+	 *  æŸ¥è¯¢ç”¨æˆ·
 	 * @return
 	 */
 	public String queryUser(){
-		users = userBiz.queryUsers(user,page,rows);//page ÊÇ1 rowsÊÇ5 
+		users = userBiz.queryUsers(user,page,rows);//page æ˜¯1 rowsæ˜¯5 
 		HashMap<String,Object> map = new HashMap<String,Object>();
 		map.put("rows", users);
 		map.put("total", userBiz.queryUserCount(user));

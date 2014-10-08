@@ -38,7 +38,7 @@ public class TRoleDAO extends HibernateDaoSupport {
 		List<TRole> roles = session.createQuery(hql).setParameter(0, id).list();
 		return roles;
 	}
-	//得到权限ID
+	//寰楀埌鏉冮檺ID
 	public List<TRole> getButtonid(int roleid){
 		String hql = "select distinct r  from TRole r left join fetch r.permissions  where r.id = ? ";
 		Session session  = getHibernateTemplate().getSessionFactory().getCurrentSession();
@@ -156,7 +156,7 @@ public class TRoleDAO extends HibernateDaoSupport {
 		}
 	}
 
-	//总数
+	//鎬绘暟
 		public Integer  count() {
 			log.debug("finding all TRole instances");
 			try {
@@ -168,7 +168,7 @@ public class TRoleDAO extends HibernateDaoSupport {
 			}
 		}
 		/**
-		 * 分页方法
+		 * 鍒嗛〉鏂规硶
 		 * @return
 		 */
 		public List findAllByPage(TRole role,String pageNumber,String pageSize) {

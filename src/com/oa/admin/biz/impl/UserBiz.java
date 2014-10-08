@@ -26,7 +26,7 @@ public class UserBiz implements IUserBiz{
 		if(list.size() ==1){
 			TUser u = (TUser)list.get(0);
 			if(u.getPassword().equals(user.getPassword())){
-				//ÕÊºÅÃÜÂëÕıÈ·  ²éÑ¯µ±Ç°¶ÔÓ¦µÄÔöÉ¾µÈÈ¨ÏŞ
+				//å¸å·å¯†ç æ­£ç¡®  æŸ¥è¯¢å½“å‰å¯¹åº”çš„å¢åˆ ç­‰æƒé™
 				StringBuilder sb = new StringBuilder();
 				if(u.getRoles().size() > 0){
 					for(TRole role:u.getRoles()){
@@ -101,11 +101,11 @@ public class UserBiz implements IUserBiz{
 
 	@Override
 	public List<TPermission> queryPermission(Integer id) {
-		//ÏÈ¸ù¾İID²éÑ¯³öµ±Ç°ÓÃ»§µÄ½ÇÉ«
+		//å…ˆæ ¹æ®IDæŸ¥è¯¢å‡ºå½“å‰ç”¨æˆ·çš„è§’è‰²
 		List<TRole> roles = roleDao.queryRolebyUserId(id);
 		List<TPermission> permissions = new ArrayList<TPermission>();
 		if(roles.size() == 1){
-			//¸ù¾İ½ÇÉ«²éÑ¯³öÈ¨ÏŞ
+			//æ ¹æ®è§’è‰²æŸ¥è¯¢å‡ºæƒé™
 			permissions  = permissionDao.queryPermissionByRoleId(roles.get(0).getId());
 			for(TPermission p:permissions){
 				System.out.println(p.getId()+"   "+p.getName()+ "  "+p.getParentid());

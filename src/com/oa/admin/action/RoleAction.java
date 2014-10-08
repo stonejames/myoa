@@ -16,16 +16,16 @@ public class RoleAction extends ActionSupport{
 	
 	private List<TRole> roles;
 	
-	private String rows;//每页显示记录条数
+	private String rows;//姣忛〉鏄剧ず璁板綍鏉℃暟
 	
-	private String page;//当前页数
+	private String page;//褰撳墠椤垫暟
 	
-	private JSONObject result;  //存储返回json
+	private JSONObject result;  //瀛樺偍杩斿洖json
 	
 	private TRole role;
 	
 	/**
-	 * 查询用户
+	 *  鏌ヨ鐢ㄦ埛
 	 * @return
 	 */
 	public String queryRole(){
